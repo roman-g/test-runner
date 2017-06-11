@@ -5,35 +5,38 @@ using Akka.Actor;
 using Akka.Configuration;
 using Akka.Dispatch;
 using TestCommon;
+using TestWeb.Settings;
 
 namespace TestWeb.Services
 {
 	public class TestServiceProxy : IDisposable
 	{
+		private readonly SettingsHolder settingsHolder;
 		private readonly ActorSystem proxySystem;
 
-		public TestServiceProxy()
+		public TestServiceProxy(SettingsHolder settingsHolder)
 		{
-			var config = ConfigurationFactory.ParseString(@"
-akka {  
+			this.settingsHolder = settingsHolder;
+			var config = ConfigurationFactory.ParseString($@"
+akka {{  
     stdout-loglevel = DEBUG
     loglevel = DEBUG
     log-config-on-start = on        
-    actor {                
-        debug {  
+    actor {{                
+        debug {{  
               unhandled = on
-        }
+        }}
         provider = ""Akka.Remote.RemoteActorRefProvider, Akka.Remote""		
 		ask-timeout = 10s
-    }
-    remote {
-        dot-netty.tcp {
+    }}
+    remote {{
+        dot-netty.tcp {{
 		    port = 0
-		    hostname = localhost
+		    hostname = {Environment.MachineName}
             maximum-frame-size = 4000000b
-        }
-    }
-}
+        }}
+    }}
+}}
 ");
 			
 			proxySystem = ActorSystem.Create("TestServiceProxySystem", config);
@@ -42,7 +45,7 @@ akka {
 		public async Task<string[]> GetAgentNames()
 		{
 			var agentsListActor =
-				proxySystem.ActorSelection("akka.tcp://TestServiceSystem@localhost:8081/user/TestService/AgentsList");
+				proxySystem.ActorSelection($"akka.tcp://TestServiceSystem@{settingsHolder.AgentSettings.ServiceEndpoint}/user/TestService/AgentsList");
 			var agentNames = await agentsListActor.Ask<AgentListResponse>(new GetAgentList()).ConfigureAwait(false);
 			return agentNames.Names;
 		}

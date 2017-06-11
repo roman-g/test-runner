@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Autofac.Extensions.DependencyInjection;
 using TestWeb.Services;
+using TestWeb.Settings;
 
 namespace TestWeb
 {
@@ -37,8 +38,10 @@ namespace TestWeb
 	        // the collection, and build the container. If you want
 	        // to dispose of the container at the end of the app,
 	        // be sure to keep a reference to it as a property or field.
-	        builder.RegisterType<TestServiceProxy>();
-	        builder.Populate(services);
+	        builder.RegisterType<TestServiceProxy>().SingleInstance();
+	        builder.RegisterType<SettingsHolder>().SingleInstance();
+
+			builder.Populate(services);
 	        this.ApplicationContainer = builder.Build();
 
 	        // Create the IServiceProvider based on the container.
