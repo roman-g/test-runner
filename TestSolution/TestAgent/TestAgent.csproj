@@ -173,6 +173,7 @@
     <Compile Include="ActorHelpers.cs" />
     <Compile Include="ContainerHolder.cs" />
     <Compile Include="EntryPoint.cs" />
+    <Compile Include="HgService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AgentSettings.cs" />

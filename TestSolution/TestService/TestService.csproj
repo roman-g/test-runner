@@ -173,6 +173,7 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestsActor.cs" />
     <Compile Include="TestServiceActor.cs" />
     <Compile Include="TestServiceSystem.cs" />
   </ItemGroup>

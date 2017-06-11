@@ -43,6 +43,7 @@ akka {{
 
 			TestServiceSystem.Instance = ActorSystem.Create("TestServiceSystem", config);
 			this.testServiceActor = TestServiceSystem.Instance.ActorOf<TestServiceActor>("TestService");
+
 			
 		}
 	}

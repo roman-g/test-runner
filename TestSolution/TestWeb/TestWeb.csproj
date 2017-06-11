@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Content Include="wwwroot\lib\app.js" />
+    <Content Include="wwwroot\src\AgentList.js" />
     <Content Include="wwwroot\src\app.js" />
   </ItemGroup>
   <ItemGroup>

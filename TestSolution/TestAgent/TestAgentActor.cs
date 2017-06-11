@@ -4,22 +4,32 @@ using TestCommon;
 
 namespace TestAgent
 {
-	public class TestAgentActor : ReceiveActor, ILogReceive
+    public class TestAgentActor : ReceiveActor, ILogReceive
 	{
-		private readonly ActorSelection server;
+	    private readonly HgService hgService;
+	    private readonly ActorSelection server;
 
-		public TestAgentActor(SettingsHolder settingsHolder)
+		public TestAgentActor(SettingsHolder settingsHolder, HgService hgService)
 		{
-			Console.WriteLine("AgentActor Started");
+		    this.hgService = hgService;
+		    Console.WriteLine("AgentActor Started");
 			server = Context.SelectTestServiceActor(settingsHolder.AgentSettings.ServiceEndpoint);
 			server.Tell(new AgentGreeting
 			{
 				AgentActor = Self
 			});
-		}
-		
 
-		/*
+		    Receive<CheckoutAndBuild>(HandleCheckoutAndBuild);
+		}
+
+	    private bool HandleCheckoutAndBuild(CheckoutAndBuild checkoutAndBuild)
+	    {
+	        hgService.CloneOrUpdate(checkoutAndBuild.Server, checkoutAndBuild.Branch);
+	        return true;
+	    }
+
+
+	    /*
 		private readonly Regex resultRegex = new Regex("<<TEST_FINISHED>>:(?'testName'[^:]*):(?'testResult'[^:]*)");
 		
 

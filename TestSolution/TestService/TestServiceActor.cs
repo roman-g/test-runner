@@ -5,17 +5,19 @@ namespace TestService
 {
 	public class TestServiceActor : ReceiveActor
 	{
-		private readonly IActorRef agentsListActor;
+		private readonly IActorRef agentListActor;
+	    private readonly IActorRef testsActor;
 
-		public TestServiceActor()
+	    public TestServiceActor()
 		{
-			agentsListActor = Context.ActorOf<AgentListActor>("AgentsList");
+			agentListActor = Context.ActorOf<AgentListActor>("AgentList");
+		    testsActor = Context.ActorOf<TestsActor>("Tests");
 			Receive<AgentGreeting>(HandleAgentGreeting);
 		}
 
 		private bool HandleAgentGreeting(AgentGreeting agentGreeting)
 		{
-			agentsListActor.Tell(new AddAgent
+			agentListActor.Tell(new AddAgent
 			{
 				AgentActor =  agentGreeting.AgentActor
 			});

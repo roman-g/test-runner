@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-export default class AgentsList extends React.Component
+export default class AgentList extends React.Component
 {
     constructor() {
         super();

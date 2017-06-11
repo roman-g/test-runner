@@ -27,7 +27,7 @@ namespace TestService
 
 				Sender.Tell(new AgentListResponse
 				{
-					Names = agents.Select(x => x.AgentActor.ToString()).ToArray()
+					AgentActorRefs = agents.Select(x => x.AgentActor).ToArray()
 				});
 			});
 

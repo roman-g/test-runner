@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Akka.Actor;
@@ -44,13 +45,27 @@ akka {{
 
 		public async Task<string[]> GetAgentNames()
 		{
-			var agentsListActor =
-				proxySystem.ActorSelection($"akka.tcp://TestServiceSystem@{settingsHolder.AgentSettings.ServiceEndpoint}/user/TestService/AgentsList");
-			var agentNames = await agentsListActor.Ask<AgentListResponse>(new GetAgentList()).ConfigureAwait(false);
-			return agentNames.Names;
+			var agentListActor = proxySystem.ActorSelection(GetPath("AgentList"));
+			var agentNames = await agentListActor.Ask<AgentListResponse>(new GetAgentList()).ConfigureAwait(false);
+			return agentNames.AgentActorRefs.Select(x => x.ToString()).ToArray();
 		}
 
-		public void Dispose()
+	    public void RunTests(string branch, string server)
+	    {
+	        var testsActor = proxySystem.ActorSelection(GetPath("Tests"));
+	        testsActor.Tell(new RunTestsRequest
+	        {
+	            Branch = branch,
+                Server = server
+	        });
+        }
+
+	    private string GetPath(string subPath)
+	    {
+	        return $"akka.tcp://TestServiceSystem@{settingsHolder.AgentSettings.ServiceEndpoint}/user/TestService/{subPath}";
+	    }
+
+	    public void Dispose()
 		{
 			proxySystem?.Dispose();
 		}

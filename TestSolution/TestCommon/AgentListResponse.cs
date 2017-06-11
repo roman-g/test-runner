@@ -1,7 +1,9 @@
-﻿namespace TestCommon
+﻿using Akka.Actor;
+
+namespace TestCommon
 {
 	public class AgentListResponse
 	{
-		public string[] Names { get; set; }
+		public IActorRef[] AgentActorRefs { get; set; }
 	}
 }

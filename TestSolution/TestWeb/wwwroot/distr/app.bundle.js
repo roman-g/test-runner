@@ -10200,7 +10200,7 @@ module.exports = getIteratorFn;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LaunchPanel__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AgentsList__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AgentList__ = __webpack_require__(211);
 
 
 
@@ -10211,7 +10211,7 @@ class Dashboard extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component 
             'div',
             null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__LaunchPanel__["a" /* default */], null),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__AgentsList__["a" /* default */], null)
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__AgentList__["a" /* default */], null)
         );
     }
 }
@@ -11076,7 +11076,8 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 108 */
+/* 108 */,
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11089,59 +11090,57 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
-class AgentsList extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+class LaunchPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     constructor() {
         super();
-        this.state = { agents: [] };
+        this.state = {
+            branch: "",
+            server: ""
+        };
     }
 
-    componentDidMount() {
-        __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/api/AgentList").then(response => {
-            this.setState(s => _extends({}, s, { agents: response.data.names }));
-        });
+    runBranch() {
+        __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/Tests/Run", { Branch: this.state.branch, Server: this.state.server });
+    }
+
+    onBranchInputChange(event) {
+        const newValue = event.target.value;
+        this.setState(s => _extends({}, s, { branch: newValue }));
+    }
+
+    onServerInputChange(event) {
+        const newValue = event.target.value;
+        this.setState(s => _extends({}, s, { server: newValue }));
     }
 
     render() {
-        const agents = this.state.agents.map(x => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { key: x },
-            x
-        ));
-
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             null,
-            agents
-        );
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = AgentsList;
-
-
-/***/ }),
-/* 109 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-
-
-class LaunchPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-    render() {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            "div",
-            null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "label",
-                { htmlFor: "branchInput" },
-                "Branch"
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "branchInput" }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "button",
+                'div',
                 null,
-                "Run"
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'label',
+                    { htmlFor: 'branchInput' },
+                    'Branch'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { id: 'branchInput', value: this.state.branch, onChange: e => this.onBranchInputChange(e) })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'label',
+                    { htmlFor: 'serverInput' },
+                    'Server'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { id: 'serverInput', value: this.state.server, onChange: e => this.onServerInputChange(e) })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'button',
+                { onClick: () => this.runBranch() },
+                'Run'
             )
         );
     }
@@ -23680,6 +23679,49 @@ function traverseAllChildren(children, callback, traverseContext) {
 
 module.exports = traverseAllChildren;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 211 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+
+class AgentList extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor() {
+        super();
+        this.state = { agents: [] };
+    }
+
+    componentDidMount() {
+        __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/api/AgentList").then(response => {
+            this.setState(s => _extends({}, s, { agents: response.data.names }));
+        });
+    }
+
+    render() {
+        const agents = this.state.agents.map(x => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { key: x },
+            x
+        ));
+
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            null,
+            agents
+        );
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AgentList;
+
 
 /***/ })
 /******/ ]);
