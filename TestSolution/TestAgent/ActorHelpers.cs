@@ -4,9 +4,9 @@ namespace TestAgent
 {
 	internal static class ActorHelpers
 	{
-		public static ActorSelection SelectTestServiceActor(this IUntypedActorContext context)
+		public static ActorSelection SelectTestServiceActor(this IUntypedActorContext context, string serviceEndpoint)
 		{
-			return context.ActorSelection("akka.tcp://TestServiceSystem@localhost:8081/user/TestService");
+			return context.ActorSelection($"akka.tcp://TestServiceSystem@{serviceEndpoint}/user/TestService");
 		}
 	}
 }

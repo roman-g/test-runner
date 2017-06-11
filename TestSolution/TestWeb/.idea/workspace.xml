@@ -42,8 +42,8 @@
       <file leaf-file-name="AgentsList.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wwwroot/src/AgentsList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+            <state relative-caret-position="480">
+              <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -67,8 +67,8 @@
             <state relative-caret-position="191353">
               <caret line="11120" column="9" lean-forward="false" selection-start-line="11120" selection-start-column="9" selection-end-line="11120" selection-end-column="9" />
               <folding>
-                <marker date="1497196485327" expanded="true" signature="2568:2614" ph="[...]" />
-                <marker date="1497196485327" expanded="true" signature="2611:2614" ph="{...}" />
+                <marker date="1497196517407" expanded="true" signature="2568:2614" ph="[...]" />
+                <marker date="1497196517407" expanded="true" signature="2611:2614" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -344,6 +344,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="a5ff5422-e454-431a-b911-9e25fa72851a" name="Default" comment="" />
@@ -351,19 +354,18 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1497112634121</updated>
-      <workItem from="1497112635391" duration="6329000" />
+      <workItem from="1497112635391" duration="7544000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6329000" />
+    <option name="totallyTimeSpent" value="7544000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <layout>
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -458,8 +460,8 @@
         <state relative-caret-position="191353">
           <caret line="11120" column="9" lean-forward="false" selection-start-line="11120" selection-start-column="9" selection-end-line="11120" selection-end-column="9" />
           <folding>
-            <marker date="1497196485327" expanded="true" signature="2568:2614" ph="[...]" />
-            <marker date="1497196485327" expanded="true" signature="2611:2614" ph="{...}" />
+            <marker date="1497196517407" expanded="true" signature="2568:2614" ph="[...]" />
+            <marker date="1497196517407" expanded="true" signature="2611:2614" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -482,8 +484,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wwwroot/src/AgentsList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+        <state relative-caret-position="480">
+          <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>

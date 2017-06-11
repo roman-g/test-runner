@@ -8,10 +8,10 @@ namespace TestAgent
 	{
 		private readonly ActorSelection server;
 
-		public TestAgentActor()
+		public TestAgentActor(SettingsHolder settingsHolder)
 		{
 			Console.WriteLine("AgentActor Started");
-			server = Context.SelectTestServiceActor();
+			server = Context.SelectTestServiceActor(settingsHolder.AgentSettings.ServiceEndpoint);
 			server.Tell(new AgentGreeting
 			{
 				AgentActor = Self

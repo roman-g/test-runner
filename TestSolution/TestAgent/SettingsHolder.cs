@@ -5,11 +5,11 @@ namespace TestAgent
 {
 	public class SettingsHolder
 	{
-		public Settings Settings { get; private set; }
+		public AgentSettings AgentSettings { get; private set; }
 
 		public SettingsHolder()
 		{
-			Settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText("settings.json"));
+			AgentSettings = JsonConvert.DeserializeObject<AgentSettings>(File.ReadAllText("settings.json"));
 		}
 	}
 }

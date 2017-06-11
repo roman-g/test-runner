@@ -11,15 +11,15 @@ namespace TestAgent
 {
 	class Program
 	{
-		public static Settings settings;
+		public static AgentSettings agentSettings;
 
 		static void Main(string[] args)
 		{
 			var builder = new ContainerBuilder();
 			var assembly = Assembly.GetExecutingAssembly();
 			builder.RegisterAssemblyTypes(assembly);
-			builder.RegisterBuildCallback(x => x.Resolve<EntryPoint>().Initialize());
-			builder.Build();
+			ContainerHolder.Instance = builder.Build();
+			ContainerHolder.Instance.Resolve<EntryPoint>().Initialize();
 			Console.ReadKey();
 		}
 	}

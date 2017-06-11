@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Akka.Actor;
 using Akka.Configuration;
@@ -7,9 +8,9 @@ using TestCommon;
 
 namespace TestWeb.Services
 {
-	public class TestServiceProxy
+	public class TestServiceProxy : IDisposable
 	{
-		private ActorSystem proxySystem;
+		private readonly ActorSystem proxySystem;
 
 		public TestServiceProxy()
 		{
@@ -34,14 +35,21 @@ akka {
     }
 }
 ");
+			
 			proxySystem = ActorSystem.Create("TestServiceProxySystem", config);
 		}
 
 		public async Task<string[]> GetAgentNames()
 		{
-			var agentsListActor = proxySystem.ActorSelection("akka.tcp://TestServiceSystem@localhost:8081/user/TestService/AgentsList");
+			var agentsListActor =
+				proxySystem.ActorSelection("akka.tcp://TestServiceSystem@localhost:8081/user/TestService/AgentsList");
 			var agentNames = await agentsListActor.Ask<AgentListResponse>(new GetAgentList()).ConfigureAwait(false);
 			return agentNames.Names;
+		}
+
+		public void Dispose()
+		{
+			proxySystem?.Dispose();
 		}
 	}
 }
