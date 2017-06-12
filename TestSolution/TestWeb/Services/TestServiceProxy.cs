@@ -50,13 +50,14 @@ akka {{
 			return agentNames.AgentActorRefs.Select(x => x.ToString()).ToArray();
 		}
 
-	    public void RunTests(string branch, string server)
+	    public void RunTests(string branch, string server, string dll)
 	    {
 	        var testsActor = proxySystem.ActorSelection(GetPath("Tests"));
 	        testsActor.Tell(new RunTestsRequest
 	        {
 	            Branch = branch,
-                Server = server
+                Server = server,
+				Dll = dll
 	        });
         }
 

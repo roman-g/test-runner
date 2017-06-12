@@ -1,6 +1,6 @@
 ﻿namespace TestCommon
 {
-    public class ParseResult
+    public class ParseTestDllResult
     {
         public string[] TestNames { get; set; }
     }

@@ -51,7 +51,7 @@ akka {
             var server = Context.ActorSelection("akka.tcp://TestAgent@localhost:8081/user/Agent");
             Receive<Start>(start =>
             {
-                var allTests = server.Ask<ParseResult>(new Parse()).Result.TestNames;
+                var allTests = server.Ask<ParseTestDllResult>(new ParseTestDll()).Result.TestNames;
                 var testsToRun = allTests.Take(3).ToArray();
                 Console.Out.WriteLine("testsToRun = {0}", string.Join(",", testsToRun));
                 server.Tell(new RunTests

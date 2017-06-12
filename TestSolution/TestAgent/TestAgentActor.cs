@@ -1,35 +1,107 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Akka.Actor;
 using TestCommon;
 
 namespace TestAgent
 {
-    public class TestAgentActor : ReceiveActor, ILogReceive
+	public class TestAgentActor : ReceiveActor, ILogReceive
 	{
-	    private readonly HgService hgService;
-	    private readonly ActorSelection server;
+		private readonly SettingsHolder settingsHolder;
+		private readonly HgService hgService;
+		private readonly BuildService buildService;
+		private readonly ActorSelection server;
 
-		public TestAgentActor(SettingsHolder settingsHolder, HgService hgService)
+		public TestAgentActor(SettingsHolder settingsHolder, HgService hgService, BuildService buildService)
 		{
-		    this.hgService = hgService;
-		    Console.WriteLine("AgentActor Started");
+			this.settingsHolder = settingsHolder;
+			this.hgService = hgService;
+			this.buildService = buildService;
+			Console.WriteLine("AgentActor Started");
 			server = Context.SelectTestServiceActor(settingsHolder.AgentSettings.ServiceEndpoint);
 			server.Tell(new AgentGreeting
 			{
 				AgentActor = Self
 			});
 
-		    Receive<CheckoutAndBuild>(HandleCheckoutAndBuild);
+			Receive<CheckoutAndBuild>(HandleCheckoutAndBuild);
+
+			Receive<ParseTestDll>(HandleParseTestDll);
+
+			Receive<RunTests>(HandleRunTests);
 		}
 
-	    private bool HandleCheckoutAndBuild(CheckoutAndBuild checkoutAndBuild)
-	    {
-	        hgService.CloneOrUpdate(checkoutAndBuild.Server, checkoutAndBuild.Branch);
-	        return true;
-	    }
+		private bool HandleParseTestDll(ParseTestDll parseTestDll)
+		{
+			Console.WriteLine("Handling Parse message");
+
+			var testDll = Path.Combine(AgentHelpers.GetWorkingDirectory(), parseTestDll.Dll);
+			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomainReflectionOnlyAssemblyResolve;
+			var testAassembly = Assembly.ReflectionOnlyLoadFrom(testDll);
+			var methods = testAassembly.DefinedTypes
+				.SelectMany(t => t.GetMethods())
+				.Where(m => m.GetCustomAttributesData()
+					.Any(x => x.AttributeType.FullName == "NUnit.Framework.TestAttribute"))
+				.Select(x => $"{x.ReflectedType.FullName}.{x.Name}")
+				.ToArray();
+
+			Sender.Tell(new ParseTestDllResult {TestNames = methods}, Self);
 
 
-	    /*
+			Assembly CurrentDomainReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+			{
+				var directory = Path.GetDirectoryName(testDll);
+				var dllpath = Path.Combine(directory, args.Name.Split(',').First() + ".dll");
+				try
+				{
+					return Assembly.ReflectionOnlyLoadFrom(dllpath);
+				}
+				catch (FileNotFoundException)
+				{
+					return Assembly.ReflectionOnlyLoad(args.Name);
+				}
+			}
+
+			return true;
+		}
+
+		private bool HandleCheckoutAndBuild(CheckoutAndBuild checkoutAndBuild)
+		{
+			hgService.CloneOrUpdate(checkoutAndBuild.Server, checkoutAndBuild.Branch);
+			buildService.Build();
+			Sender.Tell(new CheckoutAndBuildCompleted());
+			return true;
+		}
+
+		private bool HandleRunTests(RunTests runTests)
+		{
+			var testNames = string.Join(",", runTests.TestNames);
+			Console.WriteLine($"Starting process for {testNames}");
+			//extract this blocking call from the message handler
+			var process = new Process
+			{
+				StartInfo = new ProcessStartInfo
+				{
+					FileName = settingsHolder.AgentSettings.NunitConsoleExePath,
+					Arguments = $"{runTests.Dll} /run={testNames}",
+					//UseShellExecute = false,
+					//RedirectStandardOutput = true,
+					//RedirectStandardError = true,
+					//CreateNoWindow = true
+				}
+			};
+			process.Start();
+
+			process.WaitForExit();
+			Console.WriteLine("Process finished " + process.ExitCode);
+			return true;
+		}
+
+
+		/*
 		private readonly Regex resultRegex = new Regex("<<TEST_FINISHED>>:(?'testName'[^:]*):(?'testResult'[^:]*)");
 		
 

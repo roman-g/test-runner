@@ -3,7 +3,7 @@ using TestCommon;
 
 namespace TestService
 {
-	public class TestServiceActor : ReceiveActor
+	public class TestServiceActor : ReceiveActor, ILogReceive
 	{
 		private readonly IActorRef agentListActor;
 	    private readonly IActorRef testsActor;

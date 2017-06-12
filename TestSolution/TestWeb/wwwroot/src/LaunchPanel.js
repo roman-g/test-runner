@@ -6,13 +6,14 @@ export default class LaunchPanel extends React.Component
     constructor(){
         super();
         this.state = {
-            branch: "",
-            server: ""
+            branch: "default",
+            server: "http://localhost:8000",
+            dll: "TestTest\\TestTest\\bin\\Debug\\TestTest.dll"
         };
     }
 
     runBranch(){
-       axios.post("/api/Tests/Run", {Branch: this.state.branch, Server: this.state.server});
+       axios.post("/api/Tests/Run", {Branch: this.state.branch, Server: this.state.server, Dll: this.state.dll});
     }
 
     onBranchInputChange(event){
@@ -25,6 +26,11 @@ export default class LaunchPanel extends React.Component
         this.setState(s => ({...s, server: newValue}))
     }
 
+    onDllInputChange(event){
+        const newValue = event.target.value;
+        this.setState(s => ({...s, dll: newValue}))
+    }
+
     render(){
         return (<div>
             <div>
@@ -34,6 +40,10 @@ export default class LaunchPanel extends React.Component
             <div>
                 <label htmlFor="serverInput">Server</label>
                 <input id="serverInput" value={this.state.server} onChange={e => this.onServerInputChange(e)}></input>
+            </div>
+            <div>
+                <label htmlFor="dllInput">Server</label>
+                <input id="dllInput" value={this.state.dll} onChange={e => this.onDllInputChange(e)}></input>
             </div>
             <button onClick={() => this.runBranch()}>Run</button>
         </div>);

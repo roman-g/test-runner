@@ -11094,13 +11094,14 @@ class LaunchPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
     constructor() {
         super();
         this.state = {
-            branch: "",
-            server: ""
+            branch: "default",
+            server: "http://localhost:8000",
+            dll: "TestTest\\TestTest\\bin\\Debug\\TestTest.dll"
         };
     }
 
     runBranch() {
-        __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/Tests/Run", { Branch: this.state.branch, Server: this.state.server });
+        __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/Tests/Run", { Branch: this.state.branch, Server: this.state.server, Dll: this.state.dll });
     }
 
     onBranchInputChange(event) {
@@ -11111,6 +11112,11 @@ class LaunchPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
     onServerInputChange(event) {
         const newValue = event.target.value;
         this.setState(s => _extends({}, s, { server: newValue }));
+    }
+
+    onDllInputChange(event) {
+        const newValue = event.target.value;
+        this.setState(s => _extends({}, s, { dll: newValue }));
     }
 
     render() {
@@ -11136,6 +11142,16 @@ class LaunchPanel extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Componen
                     'Server'
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { id: 'serverInput', value: this.state.server, onChange: e => this.onServerInputChange(e) })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'label',
+                    { htmlFor: 'dllInput' },
+                    'Server'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { id: 'dllInput', value: this.state.dll, onChange: e => this.onDllInputChange(e) })
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'button',

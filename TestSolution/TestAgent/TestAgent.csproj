@@ -171,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActorHelpers.cs" />
+    <Compile Include="AgentConstants.cs" />
+    <Compile Include="AgentHelpers.cs" />
+    <Compile Include="BuildService.cs" />
     <Compile Include="ContainerHolder.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="HgService.cs" />

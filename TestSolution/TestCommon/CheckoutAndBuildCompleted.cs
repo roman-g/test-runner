@@ -1,6 +1,6 @@
 ﻿namespace TestCommon
 {
-    public class Parse
+    public class CheckoutAndBuildCompleted
     {
         
     }

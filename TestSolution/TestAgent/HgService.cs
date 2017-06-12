@@ -7,11 +7,10 @@ namespace TestAgent
 {
     public class HgService
     {
-        private const string CheckoutDirectory = "work";
         public void CloneOrUpdate(string server, string branch)
         {
             //naive
-            if (Directory.Exists(Path.Combine(AppContext.BaseDirectory, CheckoutDirectory)))
+            if (Directory.Exists(AgentHelpers.GetWorkingDirectory()))
                 Update(branch);
             else
                 Clone(server, branch);
@@ -20,47 +19,34 @@ namespace TestAgent
         private void Clone(string server, string branch)
         {
             Console.Out.WriteLine("Starting clone...");
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "hg",
-                    Arguments = $"clone -b {branch} {server} {CheckoutDirectory}",
-                    WorkingDirectory = AppContext.BaseDirectory
-                }
-            };
-            process.Start();
-            process.WaitForExit();
+            Run($"clone -b {branch} {server} {AgentConstants.WorkingDirectory}", AppContext.BaseDirectory);
             Console.Out.WriteLine("Clone finished...");
         }
 
         private void Update(string branch)
         {
             Console.Out.WriteLine("Starting pull...");
-            var pullProcess = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "hg",
-                    Arguments = $"pull",
-                    WorkingDirectory = Path.Combine(AppContext.BaseDirectory, CheckoutDirectory)
-                }
-            };
-            pullProcess.Start();
-            pullProcess.WaitForExit();
+            Run($"pull", AgentHelpers.GetWorkingDirectory());
             Console.Out.WriteLine("Starting update...");
-            var updateProcess = new Process
+            Run($"update {branch}", AgentHelpers.GetWorkingDirectory());
+            Console.Out.WriteLine("Update finished...");
+        }
+
+        private static void Run(string arguments, string workingDirectory)
+        {
+            var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "hg",
-                    Arguments = $"pull",
-                    WorkingDirectory = Path.Combine(AppContext.BaseDirectory, CheckoutDirectory)
+                    Arguments = arguments,
+                    WorkingDirectory = workingDirectory
                 }
             };
-            updateProcess.Start();
-            updateProcess.WaitForExit();
-            Console.Out.WriteLine("Update finished...");
+            process.Start();
+            process.WaitForExit();
+            if (process.ExitCode != 0)
+                throw new Exception($"hg exit code: [{process.ExitCode}], arguments: [{arguments}], workingDirectory: [{workingDirectory}]");
         }
     }
 }

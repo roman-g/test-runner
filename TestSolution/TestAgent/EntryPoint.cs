@@ -20,6 +20,12 @@ akka {{
     actor {{                
         debug {{  
               unhandled = on
+
+              receive = on 
+              autoreceive = on
+              lifecycle = on
+              event-stream = on
+              unhandled = on
         }}
 
         provider = ""Akka.Remote.RemoteActorRefProvider, Akka.Remote""

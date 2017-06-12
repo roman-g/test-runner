@@ -22,13 +22,14 @@ namespace TestWeb.Controllers
         [HttpPost]
         public void Run([FromBody] RunParams @params)
         {
-            testServiceProxy.RunTests(@params.Branch, @params.Server);
+            testServiceProxy.RunTests(@params.Branch, @params.Server, @params.Dll);
         }
 
         public class RunParams
         {
             public string Branch { get; set; }
             public string Server { get; set; }
+			public string Dll { get; set; }
         }
     }
 }
