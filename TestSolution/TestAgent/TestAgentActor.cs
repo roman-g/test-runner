@@ -78,22 +78,28 @@ namespace TestAgent
 
 		private bool HandleRunTests(RunTests runTests)
 		{
+			var testDll = Path.Combine(AgentHelpers.GetWorkingDirectory(), runTests.Dll);
 			var testNames = string.Join(",", runTests.TestNames);
 			Console.WriteLine($"Starting process for {testNames}");
+			Console.WriteLine($"{settingsHolder.AgentSettings.NunitConsoleExePath} {testDll} /run={testNames}");
 			//extract this blocking call from the message handler
 			var process = new Process
 			{
 				StartInfo = new ProcessStartInfo
 				{
 					FileName = settingsHolder.AgentSettings.NunitConsoleExePath,
-					Arguments = $"{runTests.Dll} /run={testNames}",
-					//UseShellExecute = false,
-					//RedirectStandardOutput = true,
-					//RedirectStandardError = true,
-					//CreateNoWindow = true
+					Arguments = $"{testDll} /run={testNames}",
+					UseShellExecute = false,
+					RedirectStandardOutput = true,
+					RedirectStandardError = true,
+					CreateNoWindow = true
 				}
 			};
+			process.OutputDataReceived += (sender, args) => Console.WriteLine(args.Data);
+			process.ErrorDataReceived += (sender, args) => Console.WriteLine(args.Data);
 			process.Start();
+			process.BeginOutputReadLine();
+			process.BeginErrorReadLine();
 
 			process.WaitForExit();
 			Console.WriteLine("Process finished " + process.ExitCode);
