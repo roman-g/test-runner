@@ -2,3 +2,5 @@
 **/packages/
 **/obj/
 **/node_modules/
+*.suo
+**/.idea/
